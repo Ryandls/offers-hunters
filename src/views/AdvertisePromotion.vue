@@ -50,7 +50,6 @@
             <money
               class="form-control input-layout w-100"
               id="price"
-              placeholder="R$ 00,00"
             />
           </b-col>
         </b-row>

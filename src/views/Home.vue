@@ -51,14 +51,36 @@
 
 <script>
 import router from "@/router";
-import { http } from "@/http";
+/* import { http } from "@/http"; */
+import { httpG } from "@/http";
 export default {
+  mounted() {
+    if (this.$store.isAuthorization) {
+      router.push("/home-menu");
+    }
+  },
   methods: {
     async loginWithGoogle() {
       const googleUser = await this.$gAuth.signIn();
       this.$actions.changeAuthorization(this.$gAuth.isAuthorized);
-      const payload = googleUser.getBasicProfile();
-      console.log(payload)
+
+      await httpG
+        .get(`oauth2/v1/userinfo`, {
+          headers: {
+            Authorization: `Bearer ${
+              googleUser.getAuthResponse().access_token
+            }`,
+          },
+        })
+        .then((response) => this.$actions.saveUserInfo(response.data))
+        .catch((error) => error);
+
+      localStorage.setItem(
+        "AccessToken",
+        googleUser.getAuthResponse().access_token
+      );
+
+      /*       const payload = googleUser.getBasicProfile();
 
       const payloadPost = {
         email: payload.Xt || payload.St,
@@ -66,17 +88,14 @@ export default {
         name: payload.IU || payload.GU,
       };
 
-      this.$actions.saveUserInfo(payloadPost);
-
       http
         .post(`user/create`, payloadPost)
-        .then((response) => (response))
-        .catch((error) => (error));
+        .then((response) => console.log(response.data))
+        .catch((error) => error); */
 
       if (this.$gAuth.isAuthorized) {
         router.push("/home-menu");
       }
-      //console.log("id", googleUser.getId());
     },
   },
 };

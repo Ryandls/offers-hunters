@@ -2,7 +2,7 @@
   <b-container>
     <div class="d-flex justify-content-between mt-3">
       <div>
-        <b-button variant="none" :to="isAuthorization ? '/home-menu' : '/' "
+        <b-button variant="none" :to="isAuthorization ? '/home-menu' : '/'"
           ><h1>
             <strong class="color-secondary">
               Offer <span class="color-primary">Hunters</span></strong
@@ -22,7 +22,6 @@
         <b-button
           variant="none"
           class="button button-logout"
-          to="/"
           v-if="isAuthorization"
           @click="logOut()"
         >
@@ -34,19 +33,21 @@
 </template>
 
 <script>
-
+import router from "@/router";
 export default {
   name: "Header",
   computed: {
-    isAuthorization(){
-      return this.$store.isAuthorization
-    }
+    isAuthorization() {
+      return this.$store.isAuthorization;
+    },
   },
   methods: {
     async logOut() {
       await this.$gAuth.signOut();
-      this.$actions.changeAuthorization(this.$gAuth.isAuthorized)
-      this.$actions.saveUserInfo({})
+      this.$actions.changeAuthorization(this.$gAuth.isAuthorized);
+      this.$actions.saveUserInfo({});
+      localStorage.AccessToken = "";
+      router.push("/");
     },
   },
 };

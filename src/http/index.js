@@ -5,3 +5,8 @@ export const http = axios.create({
   //headers: { Authorization:  },
 })
 
+export const httpG = axios.create({
+  baseURL: "https://www.googleapis.com/",
+  //headers: { Authorization:  },
+})
+

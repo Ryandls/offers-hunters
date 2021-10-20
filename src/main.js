@@ -3,6 +3,7 @@ import "./plugins/bootstrap-vue";
 import App from "./App.vue";
 import router from "./router";
 import VueCompositionAPI from "@vue/composition-api";
+import { httpG } from "@/http";
 
 Vue.config.productionTip = false;
 
@@ -32,6 +33,27 @@ const actions = {
 
 Vue.prototype.$store = store;
 Vue.prototype.$actions = actions;
+Vue.prototype.$userInfoHandler = userInfoHandler;
+
+const userInfoHandler = async () => {
+  const userInfo = {};
+
+  await httpG
+    .get(`oauth2/v1/userinfo`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.AccessToken}`,
+      },
+    })
+    .then((response) => (userInfo.value = response.data))
+    .catch((error) => error);
+
+  actions.saveUserInfo(userInfo.value);
+};
+
+if (localStorage.AccessToken) {
+  store.isAuthorization = true;
+  userInfoHandler(localStorage.AccessToken);
+}
 
 new Vue({
   router,

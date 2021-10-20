@@ -23,6 +23,11 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: "/search-promotion",
+    component: () => import("../views/SearchPromotion.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
     path: `*`,
     component: () => import("../views/NotFound.vue")
   }

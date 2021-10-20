@@ -11,10 +11,18 @@
         </b-row>
         <b-row>
           <b-col cols="8" class="mt-4">
-            <b-button variant="none" class="button button-color" to="/advertise-promotion">
+            <b-button
+              variant="none"
+              class="button button-color"
+              to="/advertise-promotion"
+            >
               Anunciar Promoção</b-button
             >
-            <b-button variant="none" class="button button-color mt-3">
+            <b-button
+              variant="none"
+              class="button button-color mt-3"
+              to="/search-promotion"
+            >
               Procurar Promoção</b-button
             >
           </b-col>
@@ -29,18 +37,25 @@
 
 <script>
 import router from "@/router";
+import { watch } from "@vue/composition-api";
 export default {
   data() {
     return {
-      userName: this.$store.userInfo.name,
+      userName: this.$store.userInfo.given_name,
     };
   },
   mounted() {
+    watch(
+      () => this.$store.userInfo.given_name,
+      () => {
+        this.userName = this.$store.userInfo.given_name;
+      }
+    );
+
     if (!this.$store.isAuthorization) {
       router.push("/");
     }
   },
-  methods: {},
 };
 </script>
 <style scoped>

@@ -10,6 +10,7 @@
   "dependencies": {
     "@vue/composition-api": "^1.2.4",
     "axios": "^0.23.0",
+    "bootstrap-icons": "^1.6.1",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "v-money": "^0.8.1",

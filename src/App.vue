@@ -2,6 +2,7 @@
   <div>
     <Header class="mb-3" />
     <div class="background-view">
+      <hr />
       <router-view />
     </div>
   </div>
@@ -12,6 +13,12 @@ import Header from "@/components/Header.vue";
 //import Footer from "@/components/Footer.vue";
 export default {
   name: "App",
+  computed: {
+    reversedMessage: function() {
+      // `this` points to the vm instance
+      return console.log("entrou")
+    },
+  },
   components: {
     Header,
     // Footer,
