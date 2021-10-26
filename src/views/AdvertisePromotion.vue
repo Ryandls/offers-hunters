@@ -12,9 +12,11 @@
             <label for="product">Produto:</label>
             <b-form-input
               id="product"
+              v-model="product"
               class="input-layout w-100"
               placeholder="Ex: RTX 3090"
               type="text"
+              :state="product !== ''"
             />
           </b-col>
         </b-row>
@@ -24,8 +26,10 @@
             <b-form-input
               id="description"
               class="input-layout w-100"
+              v-model="description"
               placeholder="Ex: 16Gbs, GDDR5"
               type="text"
+              :state="description !== ''"
             />
           </b-col>
         </b-row>
@@ -35,29 +39,47 @@
             <b-form-input
               id="link"
               class="input-layout w-100"
+              v-model="linkProduct"
               placeholder="Ex: www.loja.com.br/456161"
               type="text"
+              :state="linkProduct !== ''"
             />
           </b-col>
         </b-row>
         <b-row>
           <b-col cols="4" class="mt-3">
             <label for="date">Data de válidade:</label>
-            <b-form-input id="date" class="input-layout w-100" type="date" />
+            <b-form-input
+              id="date"
+              v-model="validity"
+              class="input-layout w-100"
+              type="date"
+            />
           </b-col>
           <b-col cols="4" class="mt-3">
             <label for="price">Valor:</label>
             <money
               class="form-control input-layout w-100"
               id="price"
+              v-model="productValue"
             />
           </b-col>
         </b-row>
         <b-row>
           <b-col cols="8">
+            <div
+              v-if="isLoading"
+              class="no-results show"
+              style="text-align: center; padding-top: 30px;"
+            >
+              <b-spinner variant="primary" label="Text Centered" />
+              <span class="sr-only">Carregando...</span>
+            </div>
             <b-button
               class="button button-color w-100 mt-4"
               variant="none"
+              @click="handlePromotion()"
+              v-if="!isLoading"
             >
               Anunciar Promoção
             </b-button>
@@ -105,10 +127,20 @@
 
 <script>
 import router from "@/router";
+import Datepicker from "vuejs-datepicker";
+import { ptBR } from "vuejs-datepicker/dist/locale";
+import { http } from "@/http";
 
 export default {
+  component: { Datepicker, ptBR },
   data() {
     return {
+      isLoading: false,
+      product: "",
+      description: "",
+      linkProduct: "",
+      validity: "",
+      productValue: "",
       previewImage: null,
     };
   },
@@ -125,6 +157,51 @@ export default {
       reader.onload = (e) => {
         this.previewImage = e.target.result;
       };
+    },
+    handlePromotion() {
+      if ((!this.validity, !this.productValue)) {
+        this.$bvToast.toast("Por favor, preencha todos os campos !!", {
+          title: "Campo Vázio",
+          autoHideDelay: 2000,
+          variant: "danger",
+          solid: true,
+        });
+      } else this.isLoading = true;
+      http
+        .post("offer/create", {
+          description: this.product + " " + this.description,
+          promotion_link: this.linkProduct,
+          image: "@/assets/monitor.png",
+          expiration_date: this.validity
+            .split("-")
+            .reverse()
+            .join("/"),
+          value: parseInt(this.productValue),
+          email: this.$store.userInfo.email,
+        })
+        .then((response) => {
+          if (response.success) {
+            this.$bvToast.toast("Promoção anunciada com sucesso!", {
+              title: "Alerta",
+              autoHideDelay: 2000,
+              variant: "danger",
+              solid: true,
+            });
+            setTimeout(() => {
+              router.push("/search-promotion");
+            }, 2000);
+          } else
+            this.$bvToast.toast(
+              "Ocorreu um erro ao anunciar a promoção, por favor, tente mais tarde!",
+              {
+                title: "Alerta",
+                autoHideDelay: 2000,
+                variant: "danger",
+                solid: true,
+              }
+            );
+        })
+        .finally(() => (this.isLoading = false));
     },
   },
 };
