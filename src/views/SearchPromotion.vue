@@ -9,7 +9,7 @@
           height="25"
           class="mr-4"
         />
-        <input type="text" class="w-100" />
+        <input type="text" class="w-100" placeholder="Pesquise aqui"/>
       </div>
     </b-container>
     <div class="justify-content-start mt-5" v-if="date.length > 0">
@@ -24,6 +24,7 @@
         <product-card
           v-for="product of date"
           :key="product.id"
+          :productId="product.id"
           :description="product.description"
           :product="product.product"
           :price="product.price"
@@ -52,6 +53,7 @@
 <script>
 import router from "@/router";
 import ProductCard from "@/components/ProductCard.vue";
+/* import { http } from "@/http"; */
 
 export default {
   components: { ProductCard },
@@ -96,6 +98,12 @@ export default {
     if (!this.$store.isAuthorization) {
       router.push("/");
     }
+
+    /*     http
+      .get(`offer/get_all`, {
+      })
+      .then((response) => console.log(response.data))
+      .catch((error) => error); */
   },
   methods: {},
 };
