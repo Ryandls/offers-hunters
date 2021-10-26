@@ -4,11 +4,15 @@ import App from "./App.vue";
 import router from "./router";
 import VueCompositionAPI from "@vue/composition-api";
 import { httpG } from "@/http";
+import { ToastPlugin } from "bootstrap-vue";
 
 Vue.config.productionTip = false;
 
 //libs
 import "@/libs/money";
+
+//plugins
+Vue.use(ToastPlugin);
 
 import GAuth from "vue-google-oauth2";
 const gauthOption = {
@@ -21,13 +25,20 @@ const gauthOption = {
 Vue.use(GAuth, gauthOption);
 Vue.use(VueCompositionAPI);
 
-const store = Vue.observable({ isAuthorization: false, userInfo: {} });
+const store = Vue.observable({
+  isAuthorization: false,
+  userInfo: {},
+  promotionId: null,
+});
 const actions = {
   changeAuthorization(payload) {
     store.isAuthorization = payload;
   },
   saveUserInfo(info) {
     store.userInfo = info;
+  },
+  saveIdPromotion(id) {
+    store.promotionId = id;
   },
 };
 

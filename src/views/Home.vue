@@ -51,7 +51,7 @@
 
 <script>
 import router from "@/router";
-/* import { http } from "@/http"; */
+import { http } from "@/http";
 import { httpG } from "@/http";
 export default {
   mounted() {
@@ -80,7 +80,7 @@ export default {
         googleUser.getAuthResponse().access_token
       );
 
-      /*       const payload = googleUser.getBasicProfile();
+            const payload = googleUser.getBasicProfile();
 
       const payloadPost = {
         email: payload.Xt || payload.St,
@@ -91,7 +91,7 @@ export default {
       http
         .post(`user/create`, payloadPost)
         .then((response) => console.log(response.data))
-        .catch((error) => error); */
+        .catch((error) => error);
 
       if (this.$gAuth.isAuthorized) {
         router.push("/home-menu");
