@@ -159,19 +159,12 @@ export default {
       };
     },
     handlePromotion() {
-      if ((!this.validity, !this.productValue)) {
-        this.$bvToast.toast("Por favor, preencha todos os campos !!", {
-          title: "Campo Vázio",
-          autoHideDelay: 2000,
-          variant: "danger",
-          solid: true,
-        });
-      } else this.isLoading = true;
+      this.isLoading = true;
       http
         .post("offer/create", {
           description: this.product + " " + this.description,
           promotion_link: this.linkProduct,
-          image: "@/assets/monitor.png",
+          image: this.previewImage,
           expiration_date: this.validity
             .split("-")
             .reverse()
@@ -190,17 +183,23 @@ export default {
             setTimeout(() => {
               router.push("/search-promotion");
             }, 2000);
-          } else
-            this.$bvToast.toast(
-              "Ocorreu um erro ao anunciar a promoção, por favor, tente mais tarde!",
-              {
-                title: "Alerta",
-                autoHideDelay: 2000,
-                variant: "danger",
-                solid: true,
-              }
-            );
+          }
         })
+        .catch(
+          this.$bvToast.toast(
+            (this.validity, this.productValue)
+              ? "Ocorreu um erro ao anunciar a promoção, por favor, tente mais tarde!"
+              : "Por favor, preencha todos os campos !!",
+            {
+              title: (!this.validity, !this.productValue)
+                ? "Alerta"
+                : "Campo Vázio",
+              autoHideDelay: 2000,
+              variant: "danger",
+              solid: true,
+            }
+          )
+        )
         .finally(() => (this.isLoading = false));
     },
   },
@@ -222,4 +221,5 @@ export default {
   width: 100%;
   height: 100%;
 }
+
 </style>

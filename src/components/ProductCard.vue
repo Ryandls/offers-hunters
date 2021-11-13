@@ -1,7 +1,12 @@
 <template>
   <div class="card d-flex justify-content-center">
     <div>
-      <img src="@/assets/modelo-print.png" :alt="description" class="w-100" />
+      <img
+        :src="imgsrc"
+        :alt="description"
+        class="w-100"
+        @click="goToDetailPromotion(productId)"
+      />
       <div class="card__description">
         <p>{{ product }} {{ description }}</p>
         <p class="text-danger font-weight-bold">{{ currencyFormat(price) }}</p>
@@ -20,11 +25,12 @@ export default {
   props: {
     product: String,
     description: String,
-    price: Number,
+    price: String,
     validity: String,
     imgsrc: String,
     hostName: String,
     link: String,
+    productId: String,
   },
   methods: {
     currencyFormat(value) {
@@ -32,6 +38,9 @@ export default {
         style: "currency",
         currency: "BRL",
       }).format(value);
+    },
+    goToDetailPromotion(id) {
+      this.$actions.saveIdPromotion(id);
     },
   },
 };
@@ -65,7 +74,6 @@ export default {
   font-size: 0.8rem;
   color: #617480;
 }
-
 span {
   font-size: large;
   font-weight: bold;

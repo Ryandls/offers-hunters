@@ -1,10 +1,11 @@
 <template>
   <div>
-    <Header class="mb-3" />
-    <div class="background-view">
-      <hr />
+    <header class="background-header">
+      <Header />
+    </header>
+    <body class="background-body">
       <router-view />
-    </div>
+    </body>
   </div>
 </template>
 
@@ -16,7 +17,7 @@ export default {
   computed: {
     reversedMessage: function() {
       // `this` points to the vm instance
-      return console.log("entrou")
+      return console.log("entrou");
     },
   },
   components: {
@@ -32,7 +33,15 @@ export default {
   padding: 0;
   font-family: "roboto", sans-serif !important;
 }
-
+body {
+  background-color: #f5f8fa !important;
+  width: 100%;
+  height: 100%;
+}
+.background-header {
+  background-color: #ffffff !important;
+  padding: 0.5rem 0rem 1rem 0rem
+}
 .color-primary {
   color: #6f06f4;
 }
@@ -55,10 +64,5 @@ export default {
   border-radius: 8px;
 
   font-weight: bold;
-}
-.background-view {
-  background-color: #f5f8fa !important;
-  width: 100%;
-  height: 89vh;
 }
 </style>
