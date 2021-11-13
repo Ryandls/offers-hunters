@@ -17,7 +17,7 @@ Vue.use(ToastPlugin);
 import GAuth from "vue-google-oauth2";
 const gauthOption = {
   clientId:
-    "874619995740-4jfl7na0v869qiq6003v6ebqun8vorob.apps.googleusercontent.com",
+    process.env.VUE_APP_GOOGLE_CLIENT_ID,
   scope: "profile email",
   prompt: "consent",
   fetch_basic_profile: true,
