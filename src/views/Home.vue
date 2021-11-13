@@ -90,7 +90,7 @@ export default {
 
       http
         .post(`user/create`, payloadPost)
-        .then((response) => console.log(response.data))
+        .then((response) => response.data)
         .catch((error) => error);
 
       if (this.$gAuth.isAuthorized) {
