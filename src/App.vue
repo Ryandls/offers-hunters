@@ -17,7 +17,7 @@ export default {
   computed: {
     reversedMessage: function() {
       // `this` points to the vm instance
-      return console.log("entrou");
+      return /* console.log("entrou") */;
     },
   },
   components: {
