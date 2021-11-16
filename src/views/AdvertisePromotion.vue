@@ -174,7 +174,7 @@ export default {
         })
         .then(() => {
           this.$bvToast.toast("Sua promoção foi encaminhada para validação!", {
-            title: "Error",
+            title: "Promoção enviada",
             autoHideDelay: 2000,
             variant: "success",
             solid: true,

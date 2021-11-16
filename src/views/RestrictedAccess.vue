@@ -9,7 +9,7 @@
         </h1>
       </b-container>
     </div>
-    <div class="mt-5">
+    <div class="containerCard mt-5">
       <product-card
         v-for="product of date.filter((element) => element.valid == false)"
         :key="product.id"
@@ -47,9 +47,6 @@ export default {
         this.admin = this.$store.admin;
       }
     );
-    watch(
-      () => this.date,
-    );
 
     if (!this.$store.isAuthorization) {
       router.push("/");
@@ -84,5 +81,12 @@ export default {
 .input-layout {
   border-radius: 10px;
   width: 115%;
+}
+.containerCard {
+  justify-content: start;
+  gap: 4rem;
+  margin-left: 4rem;
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
