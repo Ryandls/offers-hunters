@@ -10,6 +10,7 @@ Vue.config.productionTip = false;
 
 //libs
 import "@/libs/money";
+import "@/libs/moment"
 
 //plugins
 Vue.use(ToastPlugin);
