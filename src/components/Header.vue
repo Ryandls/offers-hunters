@@ -15,7 +15,7 @@
           variant="none"
           class="button button-color"
           to="restricted-access"
-          v-if="!isAuthorization"
+          v-if="admin === true && isAuthorization"
         >
           Acesso Restrito
         </b-button>
@@ -34,8 +34,22 @@
 
 <script>
 import router from "@/router";
+import { watch } from "@vue/composition-api";
 export default {
   name: "Header",
+  data() {
+    return {
+      admin: this.$store.admin,
+    };
+  },
+  mounted() {
+    watch(
+      () => this.$store.admin,
+      () => {
+        this.admin = this.$store.admin;
+      }
+    );
+  },
   computed: {
     isAuthorization() {
       return this.$store.isAuthorization;
@@ -46,6 +60,7 @@ export default {
       await this.$gAuth.signOut();
       this.$actions.changeAuthorization(this.$gAuth.isAuthorized);
       this.$actions.saveUserInfo({});
+      this.$actions.verificationAdmin("");
       localStorage.AccessToken = "";
       router.push("/");
     },
