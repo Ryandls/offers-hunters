@@ -72,6 +72,9 @@ if (localStorage.AccessToken) {
   userInfoHandler(localStorage.AccessToken);
 }
 
+if (!store.isAuthorization) {
+  router.push("/");
+}
 new Vue({
   router,
   store,

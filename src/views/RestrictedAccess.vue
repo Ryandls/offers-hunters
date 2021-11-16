@@ -1,53 +1,81 @@
 <template>
   <b-container>
     <div class="d-flex align-items-center">
-      <b-container style="margin-top:10%;">
-        <b-row>
-          <b-col>
-            <h1 class="ml-3 mb-4">
-              <strong class="color-secondary">Acesso Restrito</strong>
-            </h1>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col cols="8" class="mt-4 text-justify">
-            <label for="login">Login de Administrador:</label>
-            <b-form-input
-              id="login"
-              class="input-layout w-100"
-              placeholder="login"
-              type="text"
-            />
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col cols="8" class="mt-3">
-            <label for="password">Senha de Administrador:</label>
-            <b-form-input
-              id="password"
-              class="input-layout w-100"
-              placeholder="senha"
-              type="password"
-            />
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col cols="8">
-            <b-button variant="none" class="button button-color mt-4 w-100">
-              Entrar
-            </b-button>
-          </b-col>
-        </b-row>
+      <b-container class="text-center mt-4">
+        <h1>
+          <strong class="color-secondary"
+            >Lista de promoções para validar</strong
+          >
+        </h1>
       </b-container>
-      <b-container class="d-flex justify-content-end" style="margin-top:10%;">
-        <img src="@/assets/logohunter.png" alt="Logo Offer Hunter" />
-      </b-container>
+    </div>
+    <div class="mt-5">
+      <product-card
+        v-for="product of date.filter((element) => element.valid == false)"
+        :key="product.id"
+        :productId="product.id"
+        :description="product.description"
+        :product="product.product"
+        :price="product.value"
+        :validity="product.expiration_date"
+        :imgsrc="product.image"
+        :link="product.promotion_link"
+        :hostName="product.user.name"
+        :userAdmin="admin"
+      />
     </div>
   </b-container>
 </template>
 
 <script>
-export default {};
+import router from "@/router";
+import { http } from "@/http";
+import { watch } from "@vue/composition-api";
+import ProductCard from "@/components/ProductCard.vue";
+export default {
+  components: { ProductCard },
+  data() {
+    return {
+      admin: this.$store.admin,
+      date: [],
+    };
+  },
+  mounted() {
+    watch(
+      () => this.$store.admin,
+      () => {
+        this.admin = this.$store.admin;
+      }
+    );
+    watch(
+      () => this.date,
+    );
+
+    if (!this.$store.isAuthorization) {
+      router.push("/");
+    }
+    this.loadInfoPromotion();
+  },
+  methods: {
+    loadInfoPromotion() {
+      console.log("entrou");
+      http
+        .get(`offer/get_by_query?label=`)
+        .then(
+          (response) =>
+            (this.date = response.data.offers.filter(
+              (element) => element.valid === false
+            ))
+        )
+        .catch((error) => error)
+        .finally(() =>
+          setTimeout(() => {
+            this.loadingPage = false;
+          }, 1000)
+        );
+    },
+  },
+};
 </script>
 <style scoped>
 .button-color {

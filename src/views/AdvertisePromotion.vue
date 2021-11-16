@@ -173,8 +173,8 @@ export default {
           email: this.$store.userInfo.email,
         })
         .then(() => {
-          this.$bvToast.toast("Promoção anunciada com sucesso!", {
-            title: "Alerta",
+          this.$bvToast.toast("Sua promoção foi encaminhada para validação!", {
+            title: "Error",
             autoHideDelay: 2000,
             variant: "success",
             solid: true,
@@ -191,7 +191,7 @@ export default {
                 : "Por favor, preencha todos os campos !!",
               {
                 title: (!this.validity, !this.productValue)
-                  ? "Alerta"
+                  ? "Error"
                   : "Campo Vázio",
                 autoHideDelay: 2000,
                 variant: "danger",

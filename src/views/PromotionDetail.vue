@@ -211,7 +211,7 @@ export default {
               this.$bvToast.toast(
                 "Ocorreu um erro ao comentar a promoção, por favor, tente mais tarde!",
                 {
-                  title: "Alerta",
+                  title: "Error",
                   autoHideDelay: 2000,
                   variant: "danger",
                   solid: true,
@@ -248,7 +248,7 @@ export default {
             this.$bvToast.toast(
               "Ocorreu um erro ao tentar deletar o comentário, por favor, tente mais tarde!",
               {
-                title: "Alerta",
+                title: "Error",
                 autoHideDelay: 2000,
                 variant: "danger",
                 solid: true,

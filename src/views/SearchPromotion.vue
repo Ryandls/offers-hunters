@@ -103,7 +103,12 @@ export default {
     (this.loadingPage = true),
       http
         .get(`offer/get_by_query?label=`)
-        .then((response) => (this.date = response.data.offers))
+        .then(
+          (response) =>
+            (this.date = response.data.offers.filter(
+              (element) => element.valid === true
+            ))
+        )
         .catch((error) => error)
         .finally(() =>
           setTimeout(() => {
@@ -116,7 +121,12 @@ export default {
           this.isLoading = true;
           http
             .get(`offer/get_by_query?label=${this.search}`)
-            .then((response) => (this.date = response.data.offers))
+            .then(
+              (response) =>
+                (this.date = response.data.offers.filter(
+                  (element) => element.valid === true
+                ))
+            )
             .catch((error) => error)
             .finally(() => (this.isLoading = false));
         }

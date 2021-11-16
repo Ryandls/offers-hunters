@@ -9,7 +9,7 @@
       />
       <div class="card__description">
         <b-col class="mt-3">
-          <span class="defaultFontSize" >{{ description }}</span>
+          <span class="defaultFontSize">{{ description }}</span>
         </b-col>
         <b-col class="mt-1">
           <span class="text-danger font-weight-bold ">
@@ -29,11 +29,51 @@
         </b-col>
       </div>
     </div>
+    <div class="d-flex" v-if="userAdmin">
+      <b-button
+        class="w-50"
+        variant="success"
+        @click="showModal('modal-validation-confirm')"
+        >Validar</b-button
+      >
+      <b-button
+        class="w-50"
+        variant="danger"
+        @click="showModal('modal-validation-delete')"
+        >Deletar</b-button
+      >
+    </div>
+
+    <b-modal
+      id="modal-validation-confirm"
+      ok-title="Validar"
+      ok-variant="success"
+      centered
+      @ok="validationPromotion(productId)"
+    >
+      <form class="text-center">
+        <span>Você tem certeza que quer validar essa promoção?</span>
+      </form>
+    </b-modal>
+
+    <b-modal
+      id="modal-validation-delete"
+      ok-title="Deletar"
+      ok-variant="danger"
+      centered
+      @ok="deletePromotion(productId)"
+    >
+      <form class="text-center">
+        <span>Você tem certeza que quer deletar essa promoção?</span>
+      </form>
+    </b-modal>
   </div>
 </template>
 
 <script>
-import router from "@/router";
+import { http } from "@/http";
+import Ripple from "vue-ripple-directive";
+import { VBModal } from "bootstrap-vue";
 export default {
   props: {
     product: String,
@@ -44,6 +84,12 @@ export default {
     hostName: String,
     link: String,
     productId: String,
+    key: String,
+    userAdmin: Boolean,
+  },
+  directives: {
+    "b-modal": VBModal,
+    Ripple,
   },
   methods: {
     currencyFormat(value) {
@@ -52,8 +98,60 @@ export default {
         currency: "BRL",
       }).format(value);
     },
-    goToDetailPromotion(id) {
-      router.push({ name: "promotion-detail", params: { id: id } });
+    deletePromotion(id) {
+      http
+        .post(`/offer/delete?id=${id}`)
+        .then(() => {
+          this.$bvToast.toast("Promoção excluida com sucesso!!", {
+            title: "Sucesso",
+            autoHideDelay: 3000,
+            variant: "success",
+            solid: true,
+          });
+        })
+        .catch((error) => {
+          if (error) {
+            this.$bvToast.toast(
+              "Ocorreu um erro ao excluir a promoção, por favor, tente mais tarde!",
+              {
+                title: "Error",
+                autoHideDelay: 2000,
+                variant: "danger",
+                solid: true,
+              }
+            );
+          }
+        })
+        .finally(document.location.reload(true));
+    },
+    validationPromotion(id) {
+      http
+        .put(`/offer/verify_offer?id=${id}`)
+        .then(() => {
+          this.$bvToast.toast("Promoção validada com sucesso!!", {
+            title: "Sucesso",
+            autoHideDelay: 3000,
+            variant: "success",
+            solid: true,
+          });
+        })
+        .catch((error) => {
+          if (error) {
+            this.$bvToast.toast(
+              "Ocorreu um erro ao tentar validar a promoção, por favor, tente mais tarde!",
+              {
+                title: "Error",
+                autoHideDelay: 2000,
+                variant: "danger",
+                solid: true,
+              }
+            );
+          }
+        })
+        .finally(document.location.reload(true));
+    },
+    showModal(modal) {
+      this.$bvModal.show(`${modal}`);
     },
   },
 };
