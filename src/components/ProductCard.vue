@@ -84,7 +84,6 @@ export default {
     hostName: String,
     link: String,
     productId: String,
-    key: String,
     userAdmin: Boolean,
   },
   directives: {
@@ -122,7 +121,11 @@ export default {
             );
           }
         })
-        .finally(document.location.reload(true));
+        .finally(
+          setTimeout(() => {
+            document.location.reload(true);
+          }, 2000)
+        );
     },
     validationPromotion(id) {
       http
@@ -148,7 +151,11 @@ export default {
             );
           }
         })
-        .finally(document.location.reload(true));
+        .finally(
+          setTimeout(() => {
+            document.location.reload(true);
+          }, 2000)
+        );
     },
     showModal(modal) {
       this.$bvModal.show(`${modal}`);
