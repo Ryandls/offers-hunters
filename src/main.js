@@ -10,15 +10,14 @@ Vue.config.productionTip = false;
 
 //libs
 import "@/libs/money";
-import "@/libs/moment"
+import "@/libs/moment";
 
 //plugins
 Vue.use(ToastPlugin);
 
 import GAuth from "vue-google-oauth2";
 const gauthOption = {
-  clientId:
-    process.env.VUE_APP_GOOGLE_CLIENT_ID,
+  clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
   scope: "profile email",
   prompt: "consent",
   fetch_basic_profile: true,
@@ -29,7 +28,7 @@ Vue.use(VueCompositionAPI);
 const store = Vue.observable({
   isAuthorization: false,
   userInfo: {},
-  promotionId: null,
+  admin: false,
 });
 const actions = {
   changeAuthorization(payload) {
@@ -38,8 +37,8 @@ const actions = {
   saveUserInfo(info) {
     store.userInfo = info;
   },
-  saveIdPromotion(id) {
-    store.promotionId = id;
+  verificationAdmin(verification) {
+    store.admin = verification;
   },
 };
 

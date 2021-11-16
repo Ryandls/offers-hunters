@@ -24,7 +24,7 @@
         class="no-results show"
         style="text-align: center; padding-top: 30px;"
       >
-        <b-spinner variant="primary" label="Text Centered" class="p-4" />
+        <b-spinner label="Text Centered" class="p-4" />
         <span class="sr-only">Carregando...</span>
       </div>
       <div v-else>

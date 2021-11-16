@@ -80,7 +80,7 @@ export default {
         googleUser.getAuthResponse().access_token
       );
 
-            const payload = googleUser.getBasicProfile();
+      const payload = googleUser.getBasicProfile();
 
       const payloadPost = {
         email: payload.Xt || payload.St,
@@ -88,10 +88,13 @@ export default {
         name: payload.IU || payload.GU,
       };
 
+      http.post(`user/create`, payloadPost);
+
       http
-        .post(`user/create`, payloadPost)
-        .then((response) => response.data)
-        .catch((error) => error);
+        .get(`user/get_by_email?email=${payloadPost.email}`)
+        .then((response) =>
+          this.$actions.verificationAdmin(response.data.user.admin)
+        );
 
       if (this.$gAuth.isAuthorized) {
         router.push("/home-menu");

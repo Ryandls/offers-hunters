@@ -5,24 +5,32 @@
         <strong class="color-secondary">Detalhes da Promoção</strong>
       </h1>
     </b-container>
-    <div class="d-flex mt-2 w-100">
+    <b-spinner
+      label="Text Centered"
+      class="d-flex mt-5"
+      style="margin-left:46%; margin-top:25% !important;padding:4rem;"
+      v-if="!promotionData.user"
+    />
+    <div class="d-flex mt-2 w-100" v-if="promotionData.user">
       <b-col cols="7" style="margin-top:10%;">
-        <b-row style="margin-bottom: 5rem !important;">
+        <b-row style="margin-bottom: 3rem !important;">
           <b-col class="text-center">
             <span style="font-size:0.9rem;"> Print da promoção: </span>
-            <img
-              v-if="promotionData.image"
-              :src="promotionData.image"
-              class="uploading-image w-100 mt-3"
-            />
-            <img
-              v-else
-              src="@/assets/empty-img.jpg"
-              class="uploading-image w-100 mt-3"
-            />
+            <div>
+              <img
+                v-if="promotionData.image"
+                :src="promotionData.image"
+                class="uploading-image w-100 mt-3"
+              />
+              <img
+                v-else
+                src="@/assets/empty-img.jpg"
+                class="uploading-image w-100 mt-3"
+              />
+            </div>
           </b-col>
         </b-row>
-        <b-row class="ml-1 mr-1 comment">
+        <b-row class="ml-1 mr-1 comment" v-if="!isLoadingData">
           <b-col>
             <span class="ml-4 " style="font-size:0.9rem;"> Comentarios: </span>
             <div class="d-flex pl-4">
@@ -31,6 +39,7 @@
                 class="input-layout w-100 mr-3"
                 style="background-color:#F5F8FA;"
                 v-model="comment"
+                placeholder="Comente aqui"
               />
               <button
                 class="button button-color send-button w-25"
@@ -40,13 +49,18 @@
                 <span v-else> Enviar </span>
               </button>
             </div>
-            {{ comment }}
-            <div class="d-flex mt-4 mb-3 ml-1 mr-3 comments">
+            <div
+              class="d-flex mt-4 mb-3 ml-1 mr-3 comments"
+              v-for="comment in promotionData.comments"
+              :key="comment.id"
+            >
               <b-col cols="2">
-                <span>João diz:</span>
+                <span>{{ comment.name }}:</span>
               </b-col>
-              <b-col cols="8"> Loja confiavel e placa de video muito boa</b-col>
-              <b-col cols="2" class="current-date"> 25/09/2021 as 17:21</b-col>
+              <b-col cols="8"> {{ comment.comment }}</b-col>
+              <b-col cols="2" class="current-date text-center">
+                {{ comment.created_date }}</b-col
+              >
             </div>
           </b-col>
         </b-row>
@@ -57,7 +71,7 @@
             <b-col cols="8" class="mt-3">
               <label for="user">Postado por:</label>
               <b-container class="container-class text-left">
-                <span id="user" class="ml-2">
+                <span id="user" class="ml-2" v-if="promotionData.user">
                   {{ promotionData.user.name }}
                 </span>
               </b-container>
@@ -127,6 +141,7 @@ export default {
       promotionData: {},
       comment: "",
       isLoading: false,
+      isLoadingData: false,
     };
   },
   mounted() {
@@ -134,13 +149,7 @@ export default {
       router.push("/");
     }
 
-    http
-      .get(`/offer/get_by_id?id=${this.$route.params.id}`)
-      .then((response) => {
-        this.promotionData = response.data.offer;
-      })
-      .catch()
-      .finally();
+    this.loadPromotionData();
   },
   methods: {
     currencyFormat(value) {
@@ -148,6 +157,15 @@ export default {
         style: "currency",
         currency: "BRL",
       }).format(value);
+    },
+    loadPromotionData() {
+      http
+        .get(`/offer/get_by_id?id=${this.$route.params.id}`)
+        .then((response) => {
+          this.promotionData = response.data.offer;
+        })
+        .catch()
+        .finally();
     },
     sendCommment() {
       if (this.comment) {
@@ -161,9 +179,7 @@ export default {
             created_date:
               moment(this.date).format("L") +
               " às " +
-              moment(this.date)
-                .format("LT")
-                .slice(0, -2),
+              moment(this.date).format("LT"),
           })
           .then(() => {
             this.$bvToast.toast("Comentário realizado com sucesso!!", {
@@ -172,12 +188,7 @@ export default {
               variant: "success",
               solid: true,
             });
-            setTimeout(() => {
-              router.push({
-                name: "promotion-detail",
-                params: { id: this.$route.params.id },
-              });
-            }, 2000);
+            this.loadPromotionData();
           })
           .catch((error) => {
             if (error) {
@@ -237,6 +248,7 @@ export default {
   border-radius: 15px;
   min-height: 20%;
   padding-top: 10px;
+  margin-bottom: 3rem;
 }
 .current-date {
   font-size: 0.7rem;
