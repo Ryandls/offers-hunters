@@ -122,7 +122,11 @@ export default {
             );
           }
         })
-        .finally(setTimeout(() => {}, 2000));
+        .finally(
+          setTimeout(() => {
+            document.location.reload(true);
+          }, 2000)
+        );
     },
     validationPromotion(id) {
       http
