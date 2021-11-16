@@ -32,7 +32,7 @@
         </b-row>
         <b-row class="ml-1 mr-1 comment" v-if="!isLoadingData">
           <b-col>
-            <span class="ml-4 " style="font-size:0.9rem;"> Comentarios: </span>
+            <span class="ml-4 " style="font-size:0.9rem;"> Comentários: </span>
             <div class="d-flex pl-4">
               <b-form-input
                 type="text"
@@ -59,8 +59,15 @@
               </b-col>
               <b-col cols="8"> {{ comment.comment }}</b-col>
               <b-col cols="2" class="current-date text-center">
-                {{ comment.created_date }}</b-col
-              >
+                {{ comment.created_date }}
+              </b-col>
+              <img
+                src="../assets/delete.png"
+                style="width:20px; height:20px; margin-top:5px;"
+                alt="delete"
+                title="Deletar comentário"
+                @click="deleteComment(comment.id)"
+              />
             </div>
           </b-col>
         </b-row>
@@ -214,6 +221,33 @@ export default {
             solid: true,
           }
         );
+    },
+    deleteComment(idComment) {
+
+      http
+        .delete(`/comment/delete?id=${idComment}`)
+        .then(() => {
+          this.$bvToast.toast("Comentário deletado com sucesso!!", {
+            title: "Sucesso",
+            autoHideDelay: 3000,
+            variant: "success",
+            solid: true,
+          });
+          this.loadPromotionData();
+        })
+        .catch((error) => {
+          if (error) {
+            this.$bvToast.toast(
+              "Ocorreu um erro ao tentar deletar o comentário, por favor, tente mais tarde!",
+              {
+                title: "Alerta",
+                autoHideDelay: 2000,
+                variant: "danger",
+                solid: true,
+              }
+            );
+          }
+        });
     },
   },
 };
