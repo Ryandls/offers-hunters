@@ -83,6 +83,7 @@
 import router from "@/router";
 import ProductCard from "@/components/ProductCard.vue";
 import { http } from "@/http";
+import { watch } from "@vue/composition-api";
 
 export default {
   components: { ProductCard },
@@ -108,17 +109,18 @@ export default {
           setTimeout(() => {
             this.loadingPage = false;
           }, 1000)
-        );
-  },
-  methods: {
-    searchPromotion(change) {
-      this.isLoading = true;
-      http
-        .get(`offer/get_by_query?label=${change}`)
-        .then((response) => (this.date = response.data.offers))
-        .catch((error) => error)
-        .finally(() => (this.isLoading = false));
-    },
+        ),
+      watch(
+        () => this.search,
+        () => {
+          this.isLoading = true;
+          http
+            .get(`offer/get_by_query?label=${this.search}`)
+            .then((response) => (this.date = response.data.offers))
+            .catch((error) => error)
+            .finally(() => (this.isLoading = false));
+        }
+      );
   },
 };
 </script>
