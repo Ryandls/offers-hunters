@@ -33,19 +33,19 @@
       <b-button
         class="w-50"
         variant="success"
-        @click="showModal('modal-validation-confirm')"
+        @click="showModal(`modal-validation-confirm-${productId}`)"
         >Validar</b-button
       >
       <b-button
         class="w-50"
         variant="danger"
-        @click="showModal('modal-validation-delete')"
+        @click="showModal(`modal-validation-delete-${productId}`)"
         >Deletar</b-button
       >
     </div>
 
     <b-modal
-      id="modal-validation-confirm"
+      :id="`modal-validation-confirm-${productId}`"
       ok-title="Validar"
       ok-variant="success"
       centered
@@ -57,7 +57,7 @@
     </b-modal>
 
     <b-modal
-      id="modal-validation-delete"
+      :id="`modal-validation-delete-${productId}`"
       ok-title="Deletar"
       ok-variant="danger"
       centered
@@ -100,7 +100,7 @@ export default {
     },
     deletePromotion(id) {
       http
-        .post(`/offer/delete?id=${id}`)
+        .delete(`/offer/delete?id=${id}`)
         .then(() => {
           this.$bvToast.toast("Promoção excluida com sucesso!!", {
             title: "Sucesso",
