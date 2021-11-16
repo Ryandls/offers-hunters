@@ -58,7 +58,6 @@ export default {
   },
   methods: {
     loadInfoPromotion() {
-      console.log("entrou");
       http
         .get(`offer/get_by_query?label=`)
         .then(

@@ -73,6 +73,7 @@
 <script>
 import { http } from "@/http";
 import Ripple from "vue-ripple-directive";
+import router from "@/router";
 import { VBModal } from "bootstrap-vue";
 export default {
   props: {
@@ -121,11 +122,7 @@ export default {
             );
           }
         })
-        .finally(
-          setTimeout(() => {
-            document.location.reload(true);
-          }, 2000)
-        );
+        .finally(setTimeout(() => {}, 2000));
     },
     validationPromotion(id) {
       http
@@ -159,6 +156,9 @@ export default {
     },
     showModal(modal) {
       this.$bvModal.show(`${modal}`);
+    },
+    goToDetailPromotion(id) {
+      router.push({ name: "promotion-detail", params: { id: id } });
     },
   },
 };
