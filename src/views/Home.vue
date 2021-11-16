@@ -51,8 +51,7 @@
 
 <script>
 import router from "@/router";
-import { http } from "@/http";
-import { httpG } from "@/http";
+import { httpG, http } from "@/http";
 export default {
   mounted() {
     if (this.$store.isAuthorization) {

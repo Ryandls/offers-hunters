@@ -3,7 +3,7 @@ import "./plugins/bootstrap-vue";
 import App from "./App.vue";
 import router from "./router";
 import VueCompositionAPI from "@vue/composition-api";
-import { httpG } from "@/http";
+import { httpG, http } from "@/http";
 import { ToastPlugin } from "bootstrap-vue";
 
 Vue.config.productionTip = false;
@@ -57,6 +57,12 @@ const userInfoHandler = async () => {
     })
     .then((response) => (userInfo.value = response.data))
     .catch((error) => error);
+
+  if (userInfo) {
+    http
+      .get(`user/get_by_email?email=${userInfo.value.email}`)
+      .then((response) => actions.verificationAdmin(response.data.user.admin));
+  }
 
   actions.saveUserInfo(userInfo.value);
 };

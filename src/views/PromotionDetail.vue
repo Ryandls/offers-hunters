@@ -66,6 +66,7 @@
                 style="width:20px; height:20px; margin-top:5px;"
                 alt="delete"
                 title="Deletar comentário"
+                v-if="admin"
                 @click="deleteComment(comment.id)"
               />
             </div>
@@ -139,6 +140,7 @@ import router from "@/router";
 import Datepicker from "vuejs-datepicker";
 import { ptBR } from "vuejs-datepicker/dist/locale";
 import { http } from "@/http";
+import { watch } from "@vue/composition-api";
 import moment from "moment";
 
 export default {
@@ -149,12 +151,19 @@ export default {
       comment: "",
       isLoading: false,
       isLoadingData: false,
+      admin: this.$store.admin,
     };
   },
   mounted() {
     if (!this.$store.isAuthorization) {
       router.push("/");
     }
+    watch(
+      () => this.$store.admin,
+      () => {
+        this.admin = this.$store.admin;
+      }
+    );
 
     this.loadPromotionData();
   },
@@ -223,7 +232,6 @@ export default {
         );
     },
     deleteComment(idComment) {
-
       http
         .delete(`/comment/delete?id=${idComment}`)
         .then(() => {
