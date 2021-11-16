@@ -56,17 +56,21 @@
           <b-row>
             <b-col cols="8" class="mt-3">
               <label for="user">Postado por:</label>
-              <span id="user" class="input-layout form-control">
-                {{ promotionData.user.name }}
-              </span>
+              <b-container class="container-class text-left">
+                <span id="user" class="ml-2">
+                  {{ promotionData.user.name }}
+                </span>
+              </b-container>
             </b-col>
           </b-row>
           <b-row>
             <b-col cols="8" class="mt-4 text-justify">
               <label for="product">Produto:</label>
-              <span id="product" class="input-layout form-control">
-                {{ promotionData.description }}
-              </span>
+              <b-container class="container-class">
+                <span id="product">
+                  {{ promotionData.description }}
+                </span>
+              </b-container>
             </b-col>
           </b-row>
           <!--           <b-row>
@@ -80,15 +84,17 @@
           <b-row>
             <b-col cols="4" class="mt-3 mr-3">
               <label for="date">Válidade:</label>
-              <span id="date" class="input-layout form-control">
-                {{ promotionData.expiration_date }}</span
-              >
+              <b-container class="container-class">
+                <span id="date"> {{ promotionData.expiration_date }}</span>
+              </b-container>
             </b-col>
             <b-col cols="4" class="mt-3 ml-2">
               <label for="price">Valor:</label>
-              <span class="input-layout form-control" id="price">
-                {{ currencyFormat(promotionData.value) }}</span
-              >
+              <b-container class="container-class">
+                <span id="price">
+                  {{ currencyFormat(promotionData.value) }}</span
+                >
+              </b-container>
             </b-col>
           </b-row>
           <b-row class="d-flex">
@@ -234,5 +240,13 @@ export default {
 }
 .current-date {
   font-size: 0.7rem;
+}
+.container-class {
+  width: 115%;
+  border: 1px solid #ced4da;
+  background-color: #a0a0a011;
+  border-radius: 10px;
+  padding: 6px;
+  text-align: center;
 }
 </style>

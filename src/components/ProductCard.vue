@@ -8,24 +8,24 @@
         @click="goToDetailPromotion(productId)"
       />
       <div class="card__description">
-        <b-col class="mt-2">
-          <span>{{ product }} {{ description }}</span>
+        <b-col class="mt-3">
+          <span class="defaultFontSize" >{{ description }}</span>
         </b-col>
-        <b-col class="mt-2">
-          <span class="text-danger font-weight-bold">
+        <b-col class="mt-1">
+          <span class="text-danger font-weight-bold ">
             {{ currencyFormat(price) }}
           </span>
         </b-col>
         <b-col>
-          <span class="text-danger font-weight-bold">Válido até {{ validity }}</span>
+          <span class="text-danger font-weight-bold defaultFontSize"
+            >Válido até {{ validity }}</span
+          >
         </b-col>
         <b-col>
           <span class="lowFontSize">Anunciado por {{ hostName }}</span>
         </b-col>
         <b-col>
-          <a :href="link" class="text-center" target="_blank"
-            >Ir para o site</a
-          >
+          <a :href="link" class="text-center" target="_blank">Ir para o site</a>
         </b-col>
       </div>
     </div>
@@ -80,12 +80,12 @@ export default {
   padding-left: 1.5rem;
   background-color: rgba(240, 240, 240, 0.152);
 }
-.card__description p {
-  margin: 0.25rem;
-}
 .lowFontSize {
   font-size: 0.8rem;
   color: #617480;
+}
+.defaultFontSize {
+  font-size: 1rem;
 }
 span {
   font-size: large;
@@ -96,7 +96,7 @@ a {
   color: white;
   background-color: #6f06f4;
   border-radius: 20px;
-  padding: 3px 4%;
+  padding: 2px 4%;
 
   margin-left: 14vh;
 }
