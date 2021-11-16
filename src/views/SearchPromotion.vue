@@ -118,11 +118,6 @@ export default {
         .then((response) => (this.date = response.data.offers))
         .catch((error) => error)
         .finally(() => (this.isLoading = false));
-      http
-        .get(`offer/get_by_id?id=57815ddf-16ab-4452-843d-d3bed0c44824`)
-        .then((response) => console.log(response.data))
-        .catch((error) => error)
-        .finally(() => (this.isLoading = false));
     },
   },
 };

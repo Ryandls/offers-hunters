@@ -5,32 +5,14 @@
         <strong class="color-secondary">Detalhes da Promoção</strong>
       </h1>
     </b-container>
-    <div class="d-flex justify-content-center mt-5 w-100">
-      <b-container style="margin-top:10%">
-        <b-row>
-          <b-col>
-            <input
-              type="file"
-              accept="image/*"
-              style="display: none"
-              ref="fileInput"
-              @change="uploadImage"
-              id="file-input"
-            />
-            <b-button
-              class="button button-color w-100 mt-4"
-              variant="none"
-              @click="$refs.fileInput.click()"
-            >
-              Adicionar print da promoção
-            </b-button>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
+    <div class="d-flex mt-2 w-100">
+      <b-col cols="7" style="margin-top:10%;">
+        <b-row style="margin-bottom: 5rem !important;">
+          <b-col class="text-center">
+            <span style="font-size:0.9rem;"> Print da promoção: </span>
             <img
-              v-if="previewImage"
-              :src="previewImage"
+              v-if="promotionData.image"
+              :src="promotionData.image"
               class="uploading-image w-100 mt-3"
             />
             <img
@@ -40,87 +22,87 @@
             />
           </b-col>
         </b-row>
-      </b-container>
-      <b-container style="margin-top:10%;">
-        <b-row>
-          <b-col cols="8" class="mt-4 text-justify">
-            <label for="product">Produto:</label>
-            <b-form-input
-              id="product"
-              v-model="product"
-              class="input-layout w-100"
-              placeholder="Ex: RTX 3090"
-              type="text"
-              :state="product !== ''"
-            />
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col cols="8" class="mt-3">
-            <label for="description">Descrição:</label>
-            <b-form-input
-              id="description"
-              class="input-layout w-100"
-              v-model="description"
-              placeholder="Ex: 16Gbs, GDDR5"
-              type="text"
-              :state="description !== ''"
-            />
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col cols="8" class="mt-3">
-            <label for="link">Link para promoção:</label>
-            <b-form-input
-              id="link"
-              class="input-layout w-100"
-              v-model="linkProduct"
-              placeholder="Ex: www.loja.com.br/456161"
-              type="text"
-              :state="linkProduct !== ''"
-            />
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col cols="4" class="mt-3">
-            <label for="date">Data de válidade:</label>
-            <b-form-input
-              id="date"
-              v-model="validity"
-              class="input-layout w-100"
-              type="date"
-            />
-          </b-col>
-          <b-col cols="4" class="mt-3">
-            <label for="price">Valor:</label>
-            <money
-              class="form-control input-layout w-100"
-              id="price"
-              v-model="productValue"
-            />
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col cols="8">
-            <div
-              v-if="isLoading"
-              class="no-results show"
-              style="text-align: center; padding-top: 30px;"
-            >
-              <b-spinner variant="primary" label="Text Centered" />
-              <span class="sr-only">Carregando...</span>
+        <b-row class="ml-1 mr-1 comment">
+          <b-col>
+            <span class="ml-4 " style="font-size:0.9rem;"> Comentarios: </span>
+            <div class="d-flex pl-4">
+              <b-form-input
+                type="text"
+                class="input-layout w-100 mr-3"
+                style="background-color:#F5F8FA;"
+                v-model="comment"
+              />
+              <button
+                class="button button-color send-button w-25"
+                @click="sendCommment()"
+              >
+                <b-spinner label="Text Centered" v-if="isLoading" />
+                <span v-else> Enviar </span>
+              </button>
             </div>
-            <b-button
-              class="button button-color w-100 mt-4"
-              variant="none"
-              @click="handlePromotion()"
-              v-if="!isLoading"
-            >
-              Anunciar Promoção
-            </b-button>
+            {{ comment }}
+            <div class="d-flex mt-4 mb-3 ml-1 mr-3 comments">
+              <b-col cols="2">
+                <span>João diz:</span>
+              </b-col>
+              <b-col cols="8"> Loja confiavel e placa de video muito boa</b-col>
+              <b-col cols="2" class="current-date"> 25/09/2021 as 17:21</b-col>
+            </div>
           </b-col>
         </b-row>
-      </b-container>
+      </b-col>
+      <b-col cols="6" style="margin-top: 20%; margin-left:5%">
+        <b-container>
+          <b-row>
+            <b-col cols="8" class="mt-3">
+              <label for="user">Postado por:</label>
+              <span id="user" class="input-layout form-control">
+                {{ promotionData.user.name }}
+              </span>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col cols="8" class="mt-4 text-justify">
+              <label for="product">Produto:</label>
+              <span id="product" class="input-layout form-control">
+                {{ promotionData.description }}
+              </span>
+            </b-col>
+          </b-row>
+          <!--           <b-row>
+            <b-col cols="8" class="mt-3">
+              <label for="description">Descrição:</label>
+              <span id="description" class="input-layout form-control">
+                Ex: 16Gbs, GDDR5
+              </span>
+            </b-col>
+          </b-row> -->
+          <b-row>
+            <b-col cols="4" class="mt-3 mr-3">
+              <label for="date">Válidade:</label>
+              <span id="date" class="input-layout form-control">
+                {{ promotionData.expiration_date }}</span
+              >
+            </b-col>
+            <b-col cols="4" class="mt-3 ml-2">
+              <label for="price">Valor:</label>
+              <span class="input-layout form-control" id="price">
+                {{ currencyFormat(promotionData.value) }}</span
+              >
+            </b-col>
+          </b-row>
+          <b-row class="d-flex">
+            <b-button
+              class="button-color button-site w-25 mt-4"
+              variant="none"
+              :href="promotionData.promotion_link"
+              target="_blank"
+            >
+              Ir para o site
+            </b-button>
+          </b-row>
+        </b-container>
+      </b-col>
     </div>
   </b-container>
 </template>
@@ -130,77 +112,91 @@ import router from "@/router";
 import Datepicker from "vuejs-datepicker";
 import { ptBR } from "vuejs-datepicker/dist/locale";
 import { http } from "@/http";
+import moment from "moment";
 
 export default {
   component: { Datepicker, ptBR },
   data() {
     return {
+      promotionData: {},
+      comment: "",
       isLoading: false,
-      product: "",
-      description: "",
-      linkProduct: "",
-      validity: "",
-      productValue: "",
-      previewImage: null,
     };
   },
   mounted() {
     if (!this.$store.isAuthorization) {
       router.push("/");
     }
+
+    http
+      .get(`/offer/get_by_id?id=${this.$route.params.id}`)
+      .then((response) => {
+        this.promotionData = response.data.offer;
+      })
+      .catch()
+      .finally();
   },
   methods: {
-    uploadImage(e) {
-      const image = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onload = (e) => {
-        this.previewImage = e.target.result;
-      };
+    currencyFormat(value) {
+      return new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(value);
     },
-    handlePromotion() {
-      this.isLoading = true;
-      http
-        .post("offer/create", {
-          description: this.product + " " + this.description,
-          promotion_link: this.linkProduct,
-          image: this.previewImage,
-          expiration_date: this.validity
-            .split("-")
-            .reverse()
-            .join("/"),
-          value: parseInt(this.productValue),
-          email: this.$store.userInfo.email,
-        })
-        .then((response) => {
-          if (response.success) {
-            this.$bvToast.toast("Promoção anunciada com sucesso!", {
-              title: "Alerta",
-              autoHideDelay: 2000,
-              variant: "danger",
+    sendCommment() {
+      if (this.comment) {
+        this.isLoading = true;
+        http
+          .post(`/comment/create`, {
+            comment: this.comment,
+            user_id: this.promotionData.user_id,
+            offer_id: this.$route.params.id,
+            name: this.$store.userInfo.given_name,
+            created_date:
+              moment(this.date).format("L") +
+              " às " +
+              moment(this.date)
+                .format("LT")
+                .slice(0, -2),
+          })
+          .then(() => {
+            this.$bvToast.toast("Comentário realizado com sucesso!!", {
+              title: "Sucesso",
+              autoHideDelay: 3000,
+              variant: "success",
               solid: true,
             });
             setTimeout(() => {
-              router.push("/search-promotion");
+              router.push({
+                name: "promotion-detail",
+                params: { id: this.$route.params.id },
+              });
             }, 2000);
-          }
-        })
-        .catch(
-          this.$bvToast.toast(
-            (this.validity, this.productValue)
-              ? "Ocorreu um erro ao anunciar a promoção, por favor, tente mais tarde!"
-              : "Por favor, preencha todos os campos !!",
-            {
-              title: (!this.validity, !this.productValue)
-                ? "Alerta"
-                : "Campo Vázio",
-              autoHideDelay: 2000,
-              variant: "danger",
-              solid: true,
+          })
+          .catch((error) => {
+            if (error) {
+              this.$bvToast.toast(
+                "Ocorreu um erro ao comentar a promoção, por favor, tente mais tarde!",
+                {
+                  title: "Alerta",
+                  autoHideDelay: 2000,
+                  variant: "danger",
+                  solid: true,
+                }
+              );
             }
-          )
-        )
-        .finally(() => (this.isLoading = false));
+          })
+          .finally(() => (this.isLoading = false));
+      } else
+        this.$bvToast.toast(
+          "Campo de comentário vázio, por favor, digite algo!",
+          {
+            title: "Campo Vázio",
+            autoHideDelay: 2000,
+            variant: "danger",
+            solid: true,
+          }
+        );
     },
   },
 };
@@ -220,5 +216,23 @@ export default {
   border: none;
   width: 100%;
   height: 100%;
+}
+.button-site {
+  margin-left: 20%;
+  padding: 5px 10px;
+  border-radius: 10px;
+  width: 150px !important;
+}
+.send-button {
+  height: 38px;
+}
+.comment {
+  background-color: white;
+  border-radius: 15px;
+  min-height: 20%;
+  padding-top: 10px;
+}
+.current-date {
+  font-size: 0.7rem;
 }
 </style>

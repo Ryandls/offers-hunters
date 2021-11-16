@@ -28,6 +28,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: "/promotion-detail/:id",
+    component: () => import("../views/PromotionDetail.vue"),
+    name: "promotion-detail",
+    meta: { requiresAuth: true }
+  },
+  {
     path: `*`,
     component: () => import("../views/NotFound.vue")
   }

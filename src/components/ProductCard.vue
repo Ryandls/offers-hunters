@@ -8,19 +8,32 @@
         @click="goToDetailPromotion(productId)"
       />
       <div class="card__description">
-        <p>{{ product }} {{ description }}</p>
-        <p class="text-danger font-weight-bold">{{ currencyFormat(price) }}</p>
-        <p class="text-danger font-weight-bold">Válido até {{ validity }}</p>
-        <p class="lowFontSize">Anunciado por {{ hostName }}</p>
-        <a :href="link" class="w-50 text-center" target="_blank"
-          >Ir para o site</a
-        >
+        <b-col class="mt-2">
+          <span>{{ product }} {{ description }}</span>
+        </b-col>
+        <b-col class="mt-2">
+          <span class="text-danger font-weight-bold">
+            {{ currencyFormat(price) }}
+          </span>
+        </b-col>
+        <b-col>
+          <span class="text-danger font-weight-bold">Válido até {{ validity }}</span>
+        </b-col>
+        <b-col>
+          <span class="lowFontSize">Anunciado por {{ hostName }}</span>
+        </b-col>
+        <b-col>
+          <a :href="link" class="text-center" target="_blank"
+            >Ir para o site</a
+          >
+        </b-col>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import router from "@/router";
 export default {
   props: {
     product: String,
@@ -40,7 +53,7 @@ export default {
       }).format(value);
     },
     goToDetailPromotion(id) {
-      this.$actions.saveIdPromotion(id);
+      router.push({ name: "promotion-detail", params: { id: id } });
     },
   },
 };
@@ -83,7 +96,8 @@ a {
   color: white;
   background-color: #6f06f4;
   border-radius: 20px;
-  padding: 1px;
+  padding: 3px 4%;
+
   margin-left: 14vh;
 }
 </style>

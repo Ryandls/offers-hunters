@@ -172,34 +172,34 @@ export default {
           value: parseInt(this.productValue),
           email: this.$store.userInfo.email,
         })
-        .then((response) => {
-          if (response.success) {
-            this.$bvToast.toast("Promoção anunciada com sucesso!", {
-              title: "Alerta",
-              autoHideDelay: 2000,
-              variant: "danger",
-              solid: true,
-            });
-            setTimeout(() => {
-              router.push("/search-promotion");
-            }, 2000);
+        .then(() => {
+          this.$bvToast.toast("Promoção anunciada com sucesso!", {
+            title: "Alerta",
+            autoHideDelay: 2000,
+            variant: "success",
+            solid: true,
+          });
+          setTimeout(() => {
+            router.push("/search-promotion");
+          }, 2000);
+        })
+        .catch((error) => {
+          if (error) {
+            this.$bvToast.toast(
+              this.validity || this.productValue
+                ? "Ocorreu um erro ao anunciar a promoção, por favor, tente mais tarde!"
+                : "Por favor, preencha todos os campos !!",
+              {
+                title: (!this.validity, !this.productValue)
+                  ? "Alerta"
+                  : "Campo Vázio",
+                autoHideDelay: 2000,
+                variant: "danger",
+                solid: true,
+              }
+            );
           }
         })
-        .catch(
-          this.$bvToast.toast(
-            (this.validity, this.productValue)
-              ? "Ocorreu um erro ao anunciar a promoção, por favor, tente mais tarde!"
-              : "Por favor, preencha todos os campos !!",
-            {
-              title: (!this.validity, !this.productValue)
-                ? "Alerta"
-                : "Campo Vázio",
-              autoHideDelay: 2000,
-              variant: "danger",
-              solid: true,
-            }
-          )
-        )
         .finally(() => (this.isLoading = false));
     },
   },
@@ -221,5 +221,4 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 </style>
