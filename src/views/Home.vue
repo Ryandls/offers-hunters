@@ -32,13 +32,13 @@
                 class="img-logo mr-3"
               />Continuar com o Google</b-button
             >
-            <b-button variant="none" class="button button-color mt-3">
+<!--             <b-button variant="none" class="button button-color mt-3">
               <img
                 src="@/assets/facebook-icone.png"
                 alt="Icone do Facebook"
                 class="img-logo mr-3"
               />Continuar com o Facebook</b-button
-            >
+            > -->
           </b-col>
         </b-row>
       </b-container>
