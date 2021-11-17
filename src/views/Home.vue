@@ -82,9 +82,9 @@ export default {
       const payload = googleUser.getBasicProfile();
 
       const payloadPost = {
-        email: payload.Xt || payload.St,
-        profile_picture: payload.nK || payload.kK,
-        name: payload.IU || payload.GU,
+        email: payload.Xt || payload.St || payload.ov,
+        profile_picture: payload.nK || payload.kK || payload.mN,
+        name: payload.IU || payload.GU || payload.hf
       };
 
       http.post(`user/create`, payloadPost);
