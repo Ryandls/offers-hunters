@@ -11,7 +11,7 @@
           Mas não tem problema, basta apenas clicar no botão abaixo que você vai
           ser redirecionado.</span
         >
-        <button to="/search-promotion">Home</button>
+        <b-button class="HomeButton" to="/">Home</b-button>
       </div>
       <h2>404</h2>
     </div>
@@ -64,7 +64,7 @@ export default {};
   font-weight: bold;
 }
 
-.NotFoundContent > button {
+.HomeButton {
   padding: 0.5rem 1rem;
   border: 2px solid #6f06f4;
   color: #6f06f4;
@@ -76,12 +76,12 @@ export default {};
   transition: all 0.3s ease;
 }
 
-.NotFoundContent > button:hover {
+.HomeButton:hover {
   background-color: #6f06f4;
   color: #fff;
 }
 
-.NotFoundContent > button:focus {
+.HomeButton:focus {
   background-color: #6f06f4;
   color: #fff;
 }
@@ -111,10 +111,12 @@ export default {};
     font-size: 150px;
   }
 
-  .NotFoundContent > button {
+  .HomeButton {
     width: 100%;
-
+    display: flex;
     height: 4rem;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
